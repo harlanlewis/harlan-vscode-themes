@@ -23,6 +23,21 @@
         "label": "Harlan Light",
         "uiTheme": "vs",
         "path": "./themes/harlan-light-color-theme.json"
+      },
+      {
+        "label": "Harlan Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/harlan-dark-color-theme.json"
+      },
+      {
+        "label": "Harlan Terminal (Green)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/harlan-terminal-green-color-theme.json"
+      },
+      {
+        "label": "Harlan Terminal (Amber)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/harlan-terminal-amber-color-theme.json"
       }
     ]
   }
