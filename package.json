@@ -1,0 +1,29 @@
+{
+  "name": "harlan-light-theme",
+  "displayName": "Harlan Light",
+  "description": "A calm, warm, monospace-minded light theme derived from harlanlewis.com — weight and space over color, one restrained palette of intent accents.",
+  "version": "1.0.0",
+  "publisher": "harlanlewis",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "light",
+    "warm",
+    "minimal",
+    "monospace",
+    "calm"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Harlan Light",
+        "uiTheme": "vs",
+        "path": "./themes/harlan-light-color-theme.json"
+      }
+    ]
+  }
+}
