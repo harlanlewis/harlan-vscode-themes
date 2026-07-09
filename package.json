@@ -4,8 +4,13 @@
   "description": "Calm, warm, monospace-minded VS Code & Cursor themes derived from harlanlewis.com — weight and space over color, one restrained palette of intent accents.",
   "version": "1.0.0",
   "publisher": "harlanlewis",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harlanlewis/harlan-vscode-themes.git"
+  },
+  "homepage": "https://github.com/harlanlewis/harlan-vscode-themes",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.70.0"
   },
   "categories": [
     "Themes"
