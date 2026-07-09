@@ -26,11 +26,11 @@ import json, os
 # ansi:     list of 16 (black red green yellow blue magenta cyan white + bright*)
 
 LIGHT = {
-    "bg": "#fffaef", "chrome": "#f9f3e9", "surface": "#f1ece3",
-    "surfaceDeep": "#e4dfd6", "rule": "#e2e1dd", "indent": "#f1ebe0",
-    "indentActive": "#dad5ca", "lineNr": "#c7c2b8", "inactiveFg": "#aca79f",
+    "bg": "#fdfaf3", "chrome": "#f7f3ed", "surface": "#efece7",
+    "surfaceDeep": "#e2dfda", "rule": "#e2e1dd", "indent": "#efebe5",
+    "indentActive": "#d8d5cf", "lineNr": "#c5c2bc", "inactiveFg": "#aaa7a2",
     "inputBg": "#ffffff", "fg": "#18181a", "muted": "#71716e",
-    "quote": "#4b4b47", "faint": "#9d9991",
+    "quote": "#4b4b47", "faint": "#9c9994",
     "accentFill": "#7c3aed", "accent": "#7c3aed", "accentDeep": "#5b21b6",
     "accentFg": "#ffffff", "brand": "#db2777", "brandDeep": "#be185d",
     "linkActive": "#5b21b6",
