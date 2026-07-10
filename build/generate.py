@@ -116,7 +116,62 @@ PHOSPHOR_AMBER = {
              "type": "dark", "uiTheme": "vs-dark"},
 }
 
-PALETTES = [LIGHT, DARK, PHOSPHOR_GREEN, PHOSPHOR_AMBER]
+# Terracotta — a warm, earthy pair that is NOT derived from harlanlewis.com: it
+# borrows the mood of an open-air overland vehicle brand — bone-cream paper, a
+# single terracotta/rust accent, cool aluminum line-art, olive & camel-leather
+# supporting hues. Same role mapping as the rest: terracotta takes the mark seat
+# (keyword accent + caret + inline code), the way fuchsia/violet do in Light. The
+# chromatic set is deliberately narrow and muted — red-orange, teal, slate-blue,
+# olive, ochre — all pulled toward earth so nothing shouts over the cream.
+TERRACOTTA = {
+    "bg": "#f3efe3", "chrome": "#ede8da", "surface": "#e5dfce",
+    "surfaceDeep": "#d8d0bb", "rule": "#e1dbc9", "indent": "#eae4d5",
+    "indentActive": "#d4ccb7", "lineNr": "#c3bba5", "inactiveFg": "#a8a290",
+    "inputBg": "#fbf9f1", "fg": "#26251f", "muted": "#787365",
+    "quote": "#4a473d", "faint": "#a09a89",
+    "accentFill": "#b0472a", "accent": "#b0472a", "accentDeep": "#8f3820",
+    "accentFg": "#fbf9f1", "brand": "#b0472a", "brandDeep": "#8f3820",
+    "linkActive": "#8f3820",
+    "type": "#40607a", "string": "#5f6d2e", "number": "#9a6a1c",
+    "func": "#2f6f63", "builtin": "#324f66", "regexp": "#9a7d2b",
+    "error": "#bf3b30", "errorDeep": "#932015", "warning": "#9a6a1c",
+    "info": "#40607a", "added": "#5f8a3f", "modified": "#c06a2e",
+    "deleted": "#bf3b30", "modSoft": "#d9a15c", "selection": "#d9a15c",
+    "ansi": ["#26251f", "#bf3b30", "#5f6d2e", "#9a6a1c", "#40607a", "#b0472a",
+             "#2f6f63", "#787365", "#a09a89", "#cf5340", "#7c8a45", "#b4842a",
+             "#5a7a94", "#c9603f", "#4a8a7c", "#4a473d"],
+    "meta": {"variant": "terracotta", "label": "Harlan Terracotta",
+             "type": "light", "uiTheme": "vs"},
+}
+
+# Terracotta Dark — the deep desaturated-olive surface from the same world (its
+# spec-sheet backdrop), warm cream ink. Base hues step up to lighter rungs so
+# they sit on the olive (the base terracotta/olive sink into it), while UI fills
+# keep the saturated base with cream knockout — same rule the Dark theme uses.
+# Camel-leather amber becomes the number/constant hue; terracotta stays the mark.
+TERRACOTTA_DARK = {
+    "bg": "#373d34", "chrome": "#2f342c", "surface": "#434a3e",
+    "surfaceDeep": "#4f5749", "rule": "#40473c", "indent": "#3d443a",
+    "indentActive": "#545c4d", "lineNr": "#6a7161", "inactiveFg": "#7e8574",
+    "inputBg": "#2f342c", "fg": "#e9e5d6", "muted": "#9a9a86",
+    "quote": "#c3c1b0", "faint": "#7e8574",
+    "accentFill": "#b0472a", "accent": "#d9744f", "accentDeep": "#c25733",
+    "accentFg": "#f7f2e6", "brand": "#e08a5c", "brandDeep": "#e08a5c",
+    "linkActive": "#e08a5c",
+    "type": "#8fb0c4", "string": "#a9bd6b", "number": "#d6a45f",
+    "func": "#6db3a2", "builtin": "#8aa3c9", "regexp": "#cbab5a",
+    "error": "#e2725b", "errorDeep": "#e2725b", "warning": "#d6a45f",
+    "info": "#8fb0c4", "added": "#a9bd6b", "modified": "#d99a5c",
+    "deleted": "#e2725b", "modSoft": "#8a6a3e", "selection": "#d6a45f",
+    "ansi": ["#434a3e", "#e2725b", "#a9bd6b", "#d9b26a", "#8aa3c9", "#e08a5c",
+             "#6db3a2", "#c3c1b0", "#7e8574", "#e2725b", "#b8c97e", "#e0c07a",
+             "#a0b6d6", "#e89b70", "#85c4b3", "#e9e5d6"],
+    "meta": {"variant": "terracotta-dark", "label": "Harlan Terracotta Dark",
+             "type": "dark", "uiTheme": "vs-dark"},
+}
+
+PALETTES = [LIGHT, DARK, PHOSPHOR_GREEN, PHOSPHOR_AMBER,
+            TERRACOTTA, TERRACOTTA_DARK]
 
 
 def a(hex6, alpha):
