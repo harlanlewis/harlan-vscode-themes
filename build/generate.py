@@ -25,7 +25,7 @@ import json, os
 # intents:  error errorDeep warning info added modified deleted modSoft selection
 # ansi:     list of 16 (black red green yellow blue magenta cyan white + bright*)
 
-LIGHT = {
+PAPER = {
     "bg": "#fdfaf3", "chrome": "#f7f3ed", "surface": "#efece7",
     "surfaceDeep": "#e2dfda", "rule": "#e2e1dd", "indent": "#efebe5",
     "indentActive": "#d8d5cf", "lineNr": "#c5c2bc", "inactiveFg": "#aaa7a2",
@@ -42,16 +42,18 @@ LIGHT = {
     "ansi": ["#18181a", "#dc2626", "#166534", "#a16207", "#264c69", "#be185d",
              "#38759d", "#71716e", "#9d9991", "#ef4444", "#16a34a", "#ea580c",
              "#38759d", "#db2777", "#629bc6", "#4b4b47"],
-    "meta": {"variant": "light", "label": "Harlan Light",
+    "meta": {"variant": "paper", "label": "Harlan Paper",
              "type": "light", "uiTheme": "vs"},
 }
 
-# Dark: cool teal bg, warm ink (the site's dark theme). Resting text steps up to
+# Slate: cool teal bg, warm ink (the site's dark side). Resting text steps up to
 # the palette's -light rungs (base violet/steel/etc sink into the dark bg), but
-# UI *fills* keep the saturated base step with white knockout, exactly as light.
-DARK = {
+# UI *fills* keep the saturated base step with white knockout, exactly as Paper.
+SLATE = {
     "bg": "#182529", "chrome": "#111e22", "surface": "#253337",
-    "surfaceDeep": "#314045", "rule": "#293539", "indent": "#243034",
+    # rule is the site's dark --rule — *warm* on the teal bg on purpose
+    # (oklch(0.2812 0.0039 84.58)); was a teal #293539 before the site dialed it.
+    "surfaceDeep": "#314045", "rule": "#2a2927", "indent": "#243034",
     "indentActive": "#3f4a4d", "lineNr": "#4b5457", "inactiveFg": "#626b6d",
     "inputBg": "#111e22", "fg": "#e7e5e0", "muted": "#8c8b86",
     "quote": "#afaea9", "faint": "#626b6d",
@@ -66,7 +68,7 @@ DARK = {
     "ansi": ["#253337", "#f87171", "#4ade80", "#fde047", "#7e99fc", "#f472b6",
              "#629bc6", "#afaea9", "#626b6d", "#f87171", "#4ade80", "#fde047",
              "#7e99fc", "#f9a8d4", "#629bc6", "#e7e5e0"],
-    "meta": {"variant": "dark", "label": "Harlan Dark",
+    "meta": {"variant": "slate", "label": "Harlan Slate",
              "type": "dark", "uiTheme": "vs-dark"},
 }
 
@@ -116,62 +118,107 @@ PHOSPHOR_AMBER = {
              "type": "dark", "uiTheme": "vs-dark"},
 }
 
-# Terracotta — a warm, earthy pair that is NOT derived from harlanlewis.com: it
-# borrows the mood of an open-air overland vehicle brand — bone-cream paper, a
-# single terracotta/rust accent, cool aluminum line-art, olive & camel-leather
-# supporting hues. Same role mapping as the rest: terracotta takes the mark seat
-# (keyword accent + caret + inline code), the way fuchsia/violet do in Light. The
-# chromatic set is deliberately narrow and muted — red-orange, teal, slate-blue,
-# olive, ochre — all pulled toward earth so nothing shouts over the cream.
-TERRACOTTA = {
-    "bg": "#f3efe3", "chrome": "#ede8da", "surface": "#e5dfce",
-    "surfaceDeep": "#d8d0bb", "rule": "#e1dbc9", "indent": "#eae4d5",
-    "indentActive": "#d4ccb7", "lineNr": "#c3bba5", "inactiveFg": "#a8a290",
-    "inputBg": "#fbf9f1", "fg": "#26251f", "muted": "#787365",
-    "quote": "#4a473d", "faint": "#a09a89",
-    "accentFill": "#b0472a", "accent": "#b0472a", "accentDeep": "#8f3820",
-    "accentFg": "#fbf9f1", "brand": "#b0472a", "brandDeep": "#8f3820",
-    "linkActive": "#8f3820",
-    "type": "#40607a", "string": "#5f6d2e", "number": "#9a6a1c",
-    "func": "#2f6f63", "builtin": "#324f66", "regexp": "#9a7d2b",
-    "error": "#bf3b30", "errorDeep": "#932015", "warning": "#9a6a1c",
-    "info": "#40607a", "added": "#5f8a3f", "modified": "#c06a2e",
-    "deleted": "#bf3b30", "modSoft": "#d9a15c", "selection": "#d9a15c",
-    "ansi": ["#26251f", "#bf3b30", "#5f6d2e", "#9a6a1c", "#40607a", "#b0472a",
-             "#2f6f63", "#787365", "#a09a89", "#cf5340", "#7c8a45", "#b4842a",
-             "#5a7a94", "#c9603f", "#4a8a7c", "#4a473d"],
-    "meta": {"variant": "terracotta", "label": "Harlan Terracotta",
+# Terracotta — the site's warm earthen pair (style.css --terra-* group), no
+# longer hand-rolled: every chromatic value below is a site token (hex from the
+# oklch comments, round-trip verified with the site's oklch skill), and the
+# neutral ramp is *derived* from the site's two poles with mix() — the same
+# color-mix(fg N%, bg) move the site's --surface system uses. The site colour-
+# codes intents with a small warm-earth triad instead of one accent; the editor
+# mapping follows those seats, two rungs per family (base + the -hover rung):
+#   mark (terracotta 36): keywords ride the base rung, functions/decorators the
+#     hover rung ("the name's hue", the fuchsia precedent); caret + inline code.
+#   gold (ochre 71, the tag intent): labels & literals — types/classes/HTML
+#     tags/JSON+YAML keys and numbers/constants share the base rung (an enum
+#     member and its enum wearing one gold is coherent; quotes/colons keep JSON
+#     keys and values apart), builtins the hover rung.
+#   sage (olive 118): strings on the base rung, regexp on the hover rung.
+# Diagnostics keep the site's own rule — "legibility over fidelity": errors stay
+# base red (--accent-error-text does exactly this in the terracotta takeover),
+# warning stays base amber, and info borrows base steel — a gold info squiggle
+# would twin the amber warning. ANSI blue/cyan borrow the same steel (the
+# terracotta palette has no blue; a terminal needs one) — the desaturated
+# family, so it still sits quietly on the cream/olive. Selection is camel gold.
+
+
+def mix(base, over, pct):
+    """sRGB mix: pct of `over` laid on `base` — color-mix(in srgb, ...)."""
+    b = [int(base[i:i + 2], 16) for i in (1, 3, 5)]
+    o = [int(over[i:i + 2], 16) for i in (1, 3, 5)]
+    return "#%02x%02x%02x" % tuple(
+        round(bc + (oc - bc) * pct) for bc, oc in zip(b, o))
+
+
+_TL_BG, _TL_FG = "#f3efe3", "#26251f"   # --terra-bg-light / --terra-fg-light
+TERRACOTTA_LIGHT = {
+    "bg": _TL_BG,
+    "chrome": mix(_TL_BG, _TL_FG, 0.04),
+    "surface": mix(_TL_BG, _TL_FG, 0.06),        # --tint-surface: 6%
+    "surfaceDeep": "#d7d0be",                     # --terra-stone-light
+    "rule": "#e1dbc9",                            # --terra-rule-light
+    "indent": mix(_TL_BG, _TL_FG, 0.05),
+    "indentActive": mix(_TL_BG, _TL_FG, 0.16),
+    "lineNr": mix(_TL_BG, _TL_FG, 0.25),
+    "inactiveFg": mix(_TL_BG, _TL_FG, 0.37),
+    "inputBg": "#f7f2e6",                         # --terra-knockout
+    "fg": _TL_FG, "muted": "#787365", "quote": "#4a473d",
+    "faint": mix(_TL_BG, _TL_FG, 0.41),
+    # mark rungs: base commits, -hover suggests (hover rests *lighter* on the
+    # site, so the hover-ish accentDeep seat takes the -hover rung).
+    "accentFill": "#b0472a", "accent": "#b0472a", "accentDeep": "#cf5340",
+    "accentFg": "#f7f2e6", "brand": "#b0472a", "brandDeep": "#b0472a",
+    "linkActive": "#b0472a",
+    "type": "#9a6a28", "string": "#5f6a38", "number": "#9a6a28",
+    "func": "#cf5340", "builtin": "#b37f38", "regexp": "#74804a",
+    "error": "#dc2626", "errorDeep": "#991b1b", "warning": "#a16207",
+    "info": "#38759d", "added": "#5f6a38", "modified": "#b37f38",
+    "deleted": "#dc2626", "modSoft": "#f2b06a",   # --terra-apricot-light: the
+    "selection": "#d9a15c",                       # soft flag seat it was named for
+    "ansi": ["#26251f", "#dc2626", "#5f6a38", "#9a6a28", "#264c69", "#b0472a",
+             "#38759d", "#787365", mix(_TL_BG, _TL_FG, 0.41), "#cf5340",
+             "#74804a", "#b37f38", "#38759d", "#cf5340", "#629bc6", "#4a473d"],
+    "meta": {"variant": "terracotta-light", "label": "Harlan Terracotta Light",
              "type": "light", "uiTheme": "vs"},
 }
 
-# Terracotta Dark — the deep desaturated-olive surface from the same world (its
-# spec-sheet backdrop), warm cream ink. Base hues step up to lighter rungs so
-# they sit on the olive (the base terracotta/olive sink into it), while UI fills
-# keep the saturated base with cream knockout — same rule the Dark theme uses.
-# Camel-leather amber becomes the number/constant hue; terracotta stays the mark.
+# Terracotta Dark — the site's desaturated-olive side, warm cream ink. Text hues
+# take the dark-side rungs the site pins in [data-theme="terracotta-dark"]
+# (each family steps lighter, like the base Dark theme); UI fills use the same
+# dark-side accent with the cream knockout — the site's dark hover/focus invert
+# is --terra-mark-dark, not the light side's saturated base. surfaceDeep is
+# stone-dark, the site's designed warm chip that *contrasts* the olive bg.
+_TD_BG, _TD_FG = "#373d34", "#e9e5d6"   # --terra-bg-dark / --terra-fg-dark
 TERRACOTTA_DARK = {
-    "bg": "#373d34", "chrome": "#2f342c", "surface": "#434a3e",
-    "surfaceDeep": "#4f5749", "rule": "#40473c", "indent": "#3d443a",
-    "indentActive": "#545c4d", "lineNr": "#6a7161", "inactiveFg": "#7e8574",
-    "inputBg": "#2f342c", "fg": "#e9e5d6", "muted": "#9a9a86",
-    "quote": "#c3c1b0", "faint": "#7e8574",
-    "accentFill": "#b0472a", "accent": "#d9744f", "accentDeep": "#c25733",
-    "accentFg": "#f7f2e6", "brand": "#e08a5c", "brandDeep": "#e08a5c",
-    "linkActive": "#e08a5c",
-    "type": "#8fb0c4", "string": "#a9bd6b", "number": "#d6a45f",
-    "func": "#6db3a2", "builtin": "#8aa3c9", "regexp": "#cbab5a",
-    "error": "#e2725b", "errorDeep": "#e2725b", "warning": "#d6a45f",
-    "info": "#8fb0c4", "added": "#a9bd6b", "modified": "#d99a5c",
-    "deleted": "#e2725b", "modSoft": "#8a6a3e", "selection": "#d6a45f",
-    "ansi": ["#434a3e", "#e2725b", "#a9bd6b", "#d9b26a", "#8aa3c9", "#e08a5c",
-             "#6db3a2", "#c3c1b0", "#7e8574", "#e2725b", "#b8c97e", "#e0c07a",
-             "#a0b6d6", "#e89b70", "#85c4b3", "#e9e5d6"],
+    "bg": _TD_BG,
+    "chrome": mix(_TD_BG, "#000000", 0.12),
+    "surface": mix(_TD_BG, _TD_FG, 0.07),
+    "surfaceDeep": "#54503e",                     # --terra-stone-dark
+    "rule": "#40473c",                            # --terra-rule-dark
+    "indent": mix(_TD_BG, _TD_FG, 0.04),
+    "indentActive": mix(_TD_BG, _TD_FG, 0.15),
+    "lineNr": mix(_TD_BG, _TD_FG, 0.28),
+    "inactiveFg": mix(_TD_BG, _TD_FG, 0.37),
+    "inputBg": mix(_TD_BG, "#000000", 0.12),
+    "fg": _TD_FG, "muted": "#9a9a86", "quote": "#c3c1b0",
+    "faint": mix(_TD_BG, _TD_FG, 0.37),
+    "accentFill": "#d9744f", "accent": "#d9744f", "accentDeep": "#e08a5c",
+    "accentFg": "#f7f2e6", "brand": "#d9744f", "brandDeep": "#d9744f",
+    "linkActive": "#d9744f",
+    "type": "#c48f42", "string": "#9aa863", "number": "#c48f42",
+    "func": "#e08a5c", "builtin": "#d19f55", "regexp": "#aab873",
+    "error": "#f87171", "errorDeep": "#f87171", "warning": "#eab308",
+    "info": "#629bc6", "added": "#9aa863", "modified": "#d19f55",
+    "deleted": "#f87171", "modSoft": "#c48f42",   # base rung soft, hover rung live
+    "selection": "#d6a45f",
+    "ansi": [mix(_TD_BG, _TD_FG, 0.07), "#f87171", "#9aa863", "#d19f55",
+             "#7e99fc", "#d9744f", "#629bc6", "#c3c1b0",
+             mix(_TD_BG, _TD_FG, 0.37), "#f87171", "#aab873", "#f5c184",
+             "#7e99fc", "#e08a5c", "#629bc6", "#e9e5d6"],
     "meta": {"variant": "terracotta-dark", "label": "Harlan Terracotta Dark",
              "type": "dark", "uiTheme": "vs-dark"},
 }
 
-PALETTES = [LIGHT, DARK, PHOSPHOR_GREEN, PHOSPHOR_AMBER,
-            TERRACOTTA, TERRACOTTA_DARK]
+PALETTES = [PAPER, SLATE, PHOSPHOR_GREEN, PHOSPHOR_AMBER,
+            TERRACOTTA_LIGHT, TERRACOTTA_DARK]
 
 
 def a(hex6, alpha):

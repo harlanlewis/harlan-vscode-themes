@@ -11,12 +11,12 @@ shared structure so they stay consistent.
 
 | Theme | Base | Notes |
 |---|---|---|
-| **Harlan Light** | light | warm paper-cream bg, near-black ink |
-| **Harlan Dark** | dark | cool teal bg, warm ink; accents step to their lighter rungs |
+| **Harlan Paper** | light | warm paper-cream bg, near-black ink |
+| **Harlan Slate** | dark | cool teal bg, warm ink; accents step to their lighter rungs |
 | **Harlan Terminal (Green)** | dark | monochrome P1 phosphor tube — one green, hierarchy from lightness |
 | **Harlan Terminal (Amber)** | dark | monochrome P3 phosphor tube — amber |
-| **Harlan Terracotta** | light | bone-cream paper, a single terracotta accent, olive + camel earth tones |
-| **Harlan Terracotta Dark** | dark | deep desaturated-olive surface, warm cream ink, terracotta mark |
+| **Harlan Terracotta Light** | light | the site's bone-paper side — terracotta mark, ochre-gold + olive-sage triad |
+| **Harlan Terracotta Dark** | dark | the site's desaturated-olive side, warm cream ink, terracotta mark |
 
 Each maps the site's **intent accents** onto code the same way: **violet**
 keywords, **fuchsia** inline code + named references (the site's `--mark` hue),
@@ -26,11 +26,13 @@ editor caret. Fenced code *blocks* stay flat, uncolored slabs, as on the site.
 The phosphor tubes go monochrome but keep diagnostics off-hue so a real error
 still reads (the site's "legibility over fidelity" rule).
 
-The **Terracotta** pair is the one theme *not* derived from harlanlewis.com — a
-warm, earthy palette (bone-cream, a single terracotta accent, cool aluminum,
-olive & camel-leather) borrowed from the mood of an open-air overland vehicle.
-It reuses the same role structure: terracotta takes the mark seat — keyword
-accent, caret, inline code — the way fuchsia/violet do in Light.
+The **Terracotta** pair is the site's earthen theme (`--terra-*` tokens): the
+site colour-codes intents with a small warm-earth triad instead of one accent,
+and the editor follows those seats — **terracotta** takes the mark (keywords,
+functions, caret, inline code), **ochre-gold** the labels & literals (types,
+tags, keys, numbers, constants), **olive-sage** the strings. Errors stay base
+red and info borrows base steel, as the site's own "legibility over fidelity"
+rule insists. Selection is the soft camel gold.
 
 ## Install
 

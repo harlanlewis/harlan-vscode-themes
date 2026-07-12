@@ -56,4 +56,4 @@ fi
 [[ "$mode" == "uninstall" ]] && exit 0
 echo
 echo "Reload the window (Cmd-Shift-P → Reload Window), then:"
-echo "  Cmd-K Cmd-T → Harlan Light / Harlan Dark / Harlan Terminal (Green|Amber)"
+echo "  Cmd-K Cmd-T → Harlan Paper / Slate / Terracotta (Light|Dark) / Terminal (Green|Amber)"
