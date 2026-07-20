@@ -2,7 +2,7 @@
   "name": "harlan-vscode-themes",
   "displayName": "Harlan Themes",
   "description": "Calm, warm, monospace-minded VS Code & Cursor themes derived from harlanlewis.com — weight and space over color, one restrained palette of intent accents.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "harlanlewis",
   "repository": {
     "type": "git",
