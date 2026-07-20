@@ -15,7 +15,7 @@ shared structure so they stay consistent.
 | **Harlan Slate** | dark | cool teal bg, warm ink; accents step to their lighter rungs |
 | **Harlan Terminal (Green)** | dark | monochrome P1 phosphor tube — one green, hierarchy from lightness |
 | **Harlan Terminal (Amber)** | dark | monochrome P3 phosphor tube — amber |
-| **Harlan Terracotta Light** | light | the site's bone-paper side — terracotta mark, ochre-gold + olive-sage triad |
+| **Harlan Terracotta Light** | light | the site's bone-paper side — plum mark, ochre-gold + olive-sage triad |
 | **Harlan Terracotta Dark** | dark | the site's desaturated-olive side, warm cream ink, terracotta mark |
 
 Each maps the site's **intent accents** onto code the same way: **violet**
@@ -27,12 +27,16 @@ The phosphor tubes go monochrome but keep diagnostics off-hue so a real error
 still reads (the site's "legibility over fidelity" rule).
 
 The **Terracotta** pair is the site's earthen theme (`--terra-*` tokens): the
-site colour-codes intents with a small warm-earth triad instead of one accent,
-and the editor follows those seats — **terracotta** takes the mark (keywords,
-functions, caret, inline code), **ochre-gold** the labels & literals (types,
-tags, keys, numbers, constants), **olive-sage** the strings. Errors stay base
-red and info borrows base steel, as the site's own "legibility over fidelity"
-rule insists. Selection is the soft camel gold.
+site colour-codes intents with a small earthen triad instead of one accent, and
+the editor follows those seats — the **mark** takes keywords, functions, caret
+and inline code, **ochre-gold** the labels & literals (types, tags, keys,
+numbers, constants), **olive-sage** the strings. The two sides deliberately
+*don't* share a mark hue: the light side is a deep **plum**, the dark side
+**terracotta**, each tuned to its own paper. (The site picked plum on the gamut,
+not by eye — at knockout-safe lightness a signature accent reads through chroma,
+and the violet→magenta arc is the only one with chroma to spare on warm paper.)
+Errors stay base red and info borrows base steel, as the site's own "legibility
+over fidelity" rule insists. Selection is the soft camel gold.
 
 ## Install
 

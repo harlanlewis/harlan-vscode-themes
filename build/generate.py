@@ -123,10 +123,14 @@ PHOSPHOR_AMBER = {
 # oklch comments, round-trip verified with the site's oklch skill), and the
 # neutral ramp is *derived* from the site's two poles with mix() — the same
 # color-mix(fg N%, bg) move the site's --surface system uses. The site colour-
-# codes intents with a small warm-earth triad instead of one accent; the editor
+# codes intents with a small earthen triad instead of one accent; the editor
 # mapping follows those seats, two rungs per family (base + the -hover rung):
-#   mark (terracotta 36): keywords ride the base rung, functions/decorators the
-#     hover rung ("the name's hue", the fuchsia precedent); caret + inline code.
+#   mark (plum 345 on the light side, terracotta 40 on the dark — the two sides
+#     deliberately don't share a hue, each tuned to its own paper; the site picked
+#     plum on the gamut, since at knockout-safe L a signature reads through chroma
+#     and the violet→magenta arc is the only arc with chroma to spare): keywords
+#     ride the base rung, functions/decorators the hover rung ("the name's hue",
+#     the fuchsia precedent); caret + inline code.
 #   gold (ochre 71, the tag intent): labels & literals — types/classes/HTML
 #     tags/JSON+YAML keys and numbers/constants share the base rung (an enum
 #     member and its enum wearing one gold is coherent; quotes/colons keep JSON
@@ -164,18 +168,20 @@ TERRACOTTA_LIGHT = {
     "faint": mix(_TL_BG, _TL_FG, 0.41),
     # mark rungs: base commits, -hover suggests (hover rests *lighter* on the
     # site, so the hover-ish accentDeep seat takes the -hover rung).
-    "accentFill": "#b0472a", "accent": "#b0472a", "accentDeep": "#cf5340",
-    "accentFg": "#f7f2e6", "brand": "#b0472a", "brandDeep": "#b0472a",
-    "linkActive": "#b0472a",
+    "accentFill": "#9b2673", "accent": "#9b2673", "accentDeep": "#b7368a",
+    "accentFg": "#f7f2e6", "brand": "#9b2673", "brandDeep": "#9b2673",
+    "linkActive": "#9b2673",
     "type": "#9a6a28", "string": "#5f6a38", "number": "#9a6a28",
-    "func": "#cf5340", "builtin": "#b37f38", "regexp": "#74804a",
+    "func": "#b7368a", "builtin": "#b37f38", "regexp": "#74804a",
     "error": "#dc2626", "errorDeep": "#991b1b", "warning": "#a16207",
     "info": "#38759d", "added": "#5f6a38", "modified": "#b37f38",
     "deleted": "#dc2626", "modSoft": "#f2b06a",   # --terra-apricot-light: the
     "selection": "#d9a15c",                       # soft flag seat it was named for
-    "ansi": ["#26251f", "#dc2626", "#5f6a38", "#9a6a28", "#264c69", "#b0472a",
-             "#38759d", "#787365", mix(_TL_BG, _TL_FG, 0.41), "#cf5340",
-             "#74804a", "#b37f38", "#38759d", "#cf5340", "#629bc6", "#4a473d"],
+    # bright red is a real red (the Paper rung), not the mark's hover: the plum
+    # mark left the red seats and now sits squarely on magenta/bright magenta.
+    "ansi": ["#26251f", "#dc2626", "#5f6a38", "#9a6a28", "#264c69", "#9b2673",
+             "#38759d", "#787365", mix(_TL_BG, _TL_FG, 0.41), "#ef4444",
+             "#74804a", "#b37f38", "#38759d", "#b7368a", "#629bc6", "#4a473d"],
     "meta": {"variant": "terracotta-light", "label": "Harlan Terracotta Light",
              "type": "light", "uiTheme": "vs"},
 }
