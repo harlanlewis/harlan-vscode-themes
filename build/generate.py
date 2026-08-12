@@ -17,20 +17,34 @@ import json, os
 # Each palette is a dict of named roles. The theme() builder below references
 # only these names, so a new variant is just a new palette.
 #
-# neutrals: bg chrome surface surfaceDeep rule indent indentActive lineNr
-#           inactiveFg inputBg fg muted quote faint
+# neutrals: bg chrome elevated surface surfaceDeep rule widgetRule indent
+#           indentActive lineNr inactiveFg inputBg fg muted quote faint
 # accents:  accentFill accent accentDeep accentFg  (violet family / the door)
 #           brand brandDeep                        (fuchsia / the mark)
 # syntax:   type string number func builtin regexp
 # intents:  error errorDeep warning info added modified deleted modSoft selection
+# selAlpha: hex alpha for the accent wash behind a selected list/menu row
 # ansi:     list of 16 (black red green yellow blue magenta cyan white + bright*)
+#
+# chrome vs elevated is a DIRECTION, and the two must not be collapsed. `chrome`
+# is docked furniture — tabs, sidebar, activity bar, status bar, title bar — and
+# sits at or below the page. `elevated` is anything that FLOATS over the page:
+# hover cards, the suggest widget, menus, quick input, notifications. It sits
+# ABOVE the page in both families, lighter than `bg` on the dark themes and
+# nearer white on the light ones, because a menu that reads as a hole in the
+# page is the one thing every one of these surfaces must never do. `widgetRule`
+# is the hairline that goes with `elevated`: `rule` is tuned against `chrome`
+# and disappears once a surface lifts past it.
 
 PAPER = {
     "bg": "#fdfaf3", "chrome": "#f7f3ed", "surface": "#efece7",
+    # The page is already all but white, so a floating surface has almost no
+    # room above it: white lifts by a hair and the hairline does the rest.
+    "elevated": "#ffffff", "widgetRule": "#e2e1dd",
     "surfaceDeep": "#e2dfda", "rule": "#e2e1dd", "indent": "#efebe5",
     "indentActive": "#d8d5cf", "lineNr": "#c5c2bc", "inactiveFg": "#aaa7a2",
     "inputBg": "#ffffff", "fg": "#18181a", "muted": "#71716e",
-    "quote": "#4b4b47", "faint": "#9c9994",
+    "quote": "#4b4b47", "faint": "#9c9994", "selAlpha": "30",
     "accentFill": "#7c3aed", "accent": "#7c3aed", "accentDeep": "#5b21b6",
     "accentFg": "#ffffff", "brand": "#db2777", "brandDeep": "#be185d",
     "linkActive": "#5b21b6",
@@ -54,9 +68,10 @@ SLATE = {
     # rule is the site's dark --rule — *warm* on the teal bg on purpose
     # (oklch(0.2812 0.0039 84.58)); was a teal #293539 before the site dialed it.
     "surfaceDeep": "#314045", "rule": "#2a2927", "indent": "#243034",
+    "elevated": "#243135", "widgetRule": "#3a4649",
     "indentActive": "#3f4a4d", "lineNr": "#4b5457", "inactiveFg": "#626b6d",
-    "inputBg": "#111e22", "fg": "#e7e5e0", "muted": "#8c8b86",
-    "quote": "#afaea9", "faint": "#626b6d",
+    "inputBg": "#111e22", "fg": "#e7e5e0", "muted": "#999893",
+    "quote": "#afaea9", "faint": "#626b6d", "selAlpha": "2b",
     "accentFill": "#7c3aed", "accent": "#a78bfa", "accentDeep": "#8b5cf6",
     "accentFg": "#ffffff", "brand": "#f472b6", "brandDeep": "#f472b6",
     "linkActive": "#a78bfa",
@@ -79,9 +94,10 @@ SLATE = {
 PHOSPHOR_GREEN = {
     "bg": "#020a02", "chrome": "#071307", "surface": "#0a200e",
     "surfaceDeep": "#0f2e17", "rule": "#143f20", "indent": "#0f2e17",
+    "elevated": "#0b1c0d", "widgetRule": "#1d5730",
     "indentActive": "#195c2e", "lineNr": "#195c2e", "inactiveFg": "#22864a",
-    "inputBg": "#071307", "fg": "#54ff8c", "muted": "#22864a",
-    "quote": "#2e9e52", "faint": "#195c2e",
+    "inputBg": "#071307", "fg": "#54ff8c", "muted": "#289552",
+    "quote": "#2e9e52", "faint": "#195c2e", "selAlpha": "2b",
     "accentFill": "#2bcf70", "accent": "#2bcf70", "accentDeep": "#5cf59b",
     "accentFg": "#03130a", "brand": "#5cf59b", "brandDeep": "#5cf59b",
     "linkActive": "#5cf59b",
@@ -100,9 +116,10 @@ PHOSPHOR_GREEN = {
 PHOSPHOR_AMBER = {
     "bg": "#0a0600", "chrome": "#140f03", "surface": "#231906",
     "surfaceDeep": "#32230a", "rule": "#3a2606", "indent": "#32230a",
+    "elevated": "#1d1607", "widgetRule": "#4c320a",
     "indentActive": "#704a07", "lineNr": "#704a07", "inactiveFg": "#b07a32",
     "inputBg": "#140f03", "fg": "#ffcf8a", "muted": "#b07a32",
-    "quote": "#c28d42", "faint": "#704a07",
+    "quote": "#c28d42", "faint": "#704a07", "selAlpha": "2b",
     "accentFill": "#ffb454", "accent": "#ffb454", "accentDeep": "#ffd9a0",
     "accentFg": "#160a00", "brand": "#ffd9a0", "brandDeep": "#ffd9a0",
     "linkActive": "#ffd9a0",
@@ -157,6 +174,14 @@ TERRACOTTA_LIGHT = {
     "bg": _TL_BG,
     "chrome": mix(_TL_BG, _TL_FG, 0.04),
     "surface": mix(_TL_BG, _TL_FG, 0.06),        # --tint-surface: 6%
+    # The warm page leaves real room toward white, and a floating menu is the
+    # one place to spend it: a menu should read as a fresh sheet laid on the
+    # paper, not a scuff in it. This is the knockout's warmth (r-b of about 16,
+    # the value the whole light side is built on) carried up in lightness, not
+    # a mix toward white — mixing toward a neutral white drains the r-b spread
+    # to nothing and the sheet turns blue against the bg.
+    "elevated": "#fdf9ee",
+    "widgetRule": "#ded8c4",
     "surfaceDeep": "#d7d0be",                     # --terra-stone-light
     "rule": "#e1dbc9",                            # --terra-rule-light
     "indent": mix(_TL_BG, _TL_FG, 0.05),
@@ -164,8 +189,8 @@ TERRACOTTA_LIGHT = {
     "lineNr": mix(_TL_BG, _TL_FG, 0.25),
     "inactiveFg": mix(_TL_BG, _TL_FG, 0.37),
     "inputBg": "#f7f2e6",                         # --terra-knockout
-    "fg": _TL_FG, "muted": "#787365", "quote": "#4a473d",
-    "faint": mix(_TL_BG, _TL_FG, 0.41),
+    "fg": _TL_FG, "muted": "#706b5e", "quote": "#4a473d",
+    "faint": mix(_TL_BG, _TL_FG, 0.41), "selAlpha": "2b",
     # mark rungs: base commits, -hover suggests (hover rests *lighter* on the
     # site, so the hover-ish accentDeep seat takes the -hover rung).
     "accentFill": "#9b2673", "accent": "#9b2673", "accentDeep": "#b7368a",
@@ -197,6 +222,12 @@ TERRACOTTA_DARK = {
     "bg": _TD_BG,
     "chrome": mix(_TD_BG, "#000000", 0.12),
     "surface": mix(_TD_BG, _TD_FG, 0.07),
+    # The tightest lift in the set: this ink starts at 8.2:1 on its own page,
+    # and a menu ground plus a hover wash plus a dimmed hint all spend from
+    # that one budget. 6% is what buys a visible lift and still leaves the
+    # secondary ink above AA on a hovered row.
+    "elevated": mix(_TD_BG, _TD_FG, 0.06),
+    "widgetRule": "#525848",
     "surfaceDeep": "#54503e",                     # --terra-stone-dark
     "rule": "#40473c",                            # --terra-rule-dark
     "indent": mix(_TD_BG, _TD_FG, 0.04),
@@ -204,10 +235,13 @@ TERRACOTTA_DARK = {
     "lineNr": mix(_TD_BG, _TD_FG, 0.28),
     "inactiveFg": mix(_TD_BG, _TD_FG, 0.37),
     "inputBg": mix(_TD_BG, "#000000", 0.12),
-    "fg": _TD_FG, "muted": "#9a9a86", "quote": "#c3c1b0",
-    "faint": mix(_TD_BG, _TD_FG, 0.37),
+    "fg": _TD_FG, "muted": "#b3b2a0", "quote": "#c3c1b0",
+    "faint": mix(_TD_BG, _TD_FG, 0.37), "selAlpha": "3d",
+    # The one dark palette whose accent fill is LIGHT: terracotta at this
+    # lightness takes a dark knockout, the way amber and green already do.
+    # The cream this used to carry read at 2.86:1 on the fill.
     "accentFill": "#d9744f", "accent": "#d9744f", "accentDeep": "#e08a5c",
-    "accentFg": "#f7f2e6", "brand": "#d9744f", "brandDeep": "#d9744f",
+    "accentFg": "#2a1409", "brand": "#d9744f", "brandDeep": "#d9744f",
     "linkActive": "#d9744f",
     "type": "#c48f42", "string": "#9aa863", "number": "#c48f42",
     "func": "#e08a5c", "builtin": "#d19f55", "regexp": "#aab873",
@@ -235,13 +269,14 @@ def a(hex6, alpha):
 def colors(P):
     """Workbench colors, keyed by role. One structure, every theme."""
     p = P
+    sel = p["selAlpha"]   # accent wash behind a selected list / menu row
     return {
         "foreground": p["quote"],
         "descriptionForeground": p["muted"],
         "errorForeground": p["error"],
         "focusBorder": a(p["accent"], "80"),
         "selection.background": a(p["selection"], "40"),
-        "widget.border": p["rule"],
+        "widget.border": p["widgetRule"],
         "widget.shadow": a(p["fg"], "0f"),
         "icon.foreground": p["muted"],
         "sash.hoverBorder": a(p["accent"], "80"),
@@ -313,17 +348,17 @@ def colors(P):
         "editorOverviewRuler.deletedForeground": p["deleted"],
 
         # chrome / widgets
-        "editorWidget.background": p["chrome"],
-        "editorWidget.border": p["rule"],
-        "editorSuggestWidget.background": p["chrome"],
-        "editorSuggestWidget.border": p["rule"],
+        "editorWidget.background": p["elevated"],
+        "editorWidget.border": p["widgetRule"],
+        "editorSuggestWidget.background": p["elevated"],
+        "editorSuggestWidget.border": p["widgetRule"],
         "editorSuggestWidget.foreground": p["fg"],
-        "editorSuggestWidget.selectedBackground": a(p["accent"], "14"),
+        "editorSuggestWidget.selectedBackground": a(p["accent"], sel),
         "editorSuggestWidget.selectedForeground": p["fg"],
         "editorSuggestWidget.highlightForeground": p["accent"],
         "editorSuggestWidget.focusHighlightForeground": p["accent"],
-        "editorHoverWidget.background": p["chrome"],
-        "editorHoverWidget.border": p["rule"],
+        "editorHoverWidget.background": p["elevated"],
+        "editorHoverWidget.border": p["widgetRule"],
         "editorHoverWidget.foreground": p["fg"],
 
         "editorGroup.border": p["rule"],
@@ -355,21 +390,21 @@ def colors(P):
         "sideBarSectionHeader.foreground": p["muted"],
         "sideBarSectionHeader.border": p["rule"],
 
-        "list.activeSelectionBackground": a(p["accent"], "1f"),
+        "list.activeSelectionBackground": a(p["accent"], sel),
         "list.activeSelectionForeground": p["fg"],
         "list.activeSelectionIconForeground": p["accent"],
         "list.inactiveSelectionBackground": p["surfaceDeep"],
         "list.inactiveSelectionForeground": p["fg"],
         "list.hoverBackground": p["surface"],
         "list.hoverForeground": p["fg"],
-        "list.focusBackground": a(p["accent"], "1f"),
+        "list.focusBackground": a(p["accent"], sel),
         "list.focusForeground": p["fg"],
         "list.focusOutline": a(p["accent"], "66"),
         "list.highlightForeground": p["accent"],
         "list.errorForeground": p["errorDeep"],
         "list.warningForeground": p["warning"],
         "list.dropBackground": a(p["accent"], "14"),
-        "listFilterWidget.background": p["chrome"],
+        "listFilterWidget.background": p["elevated"],
         "listFilterWidget.outline": a(p["accent"], "66"),
         "listFilterWidget.noMatchesOutline": p["error"],
         "tree.indentGuidesStroke": p["indentActive"],
@@ -413,12 +448,12 @@ def colors(P):
         "titleBar.border": p["rule"],
 
         # menus
-        "menu.background": p["chrome"],
+        "menu.background": p["elevated"],
         "menu.foreground": p["fg"],
-        "menu.border": p["rule"],
-        "menu.selectionBackground": a(p["accent"], "1f"),
+        "menu.border": p["widgetRule"],
+        "menu.selectionBackground": a(p["accent"], sel),
         "menu.selectionForeground": p["fg"],
-        "menu.separatorBackground": p["rule"],
+        "menu.separatorBackground": p["widgetRule"],
         "menubar.selectionBackground": p["surface"],
         "menubar.selectionForeground": p["fg"],
 
@@ -440,7 +475,7 @@ def colors(P):
         "dropdown.background": p["inputBg"],
         "dropdown.foreground": p["fg"],
         "dropdown.border": p["rule"],
-        "dropdown.listBackground": p["chrome"],
+        "dropdown.listBackground": p["elevated"],
 
         "button.background": p["accentFill"],
         "button.foreground": p["accentFg"],
@@ -536,9 +571,9 @@ def colors(P):
         "peekViewTitleDescription.foreground": p["muted"],
 
         # notifications & misc
-        "notifications.background": p["chrome"],
+        "notifications.background": p["elevated"],
         "notifications.foreground": p["fg"],
-        "notifications.border": p["rule"],
+        "notifications.border": p["widgetRule"],
         "notificationCenterHeader.background": p["surface"],
         "notificationCenterHeader.foreground": p["muted"],
         "notificationLink.foreground": p["accent"],
@@ -549,11 +584,11 @@ def colors(P):
         "breadcrumb.foreground": p["muted"],
         "breadcrumb.focusForeground": p["fg"],
         "breadcrumb.activeSelectionForeground": p["accent"],
-        "breadcrumbPicker.background": p["chrome"],
+        "breadcrumbPicker.background": p["elevated"],
 
-        "quickInput.background": p["chrome"],
+        "quickInput.background": p["elevated"],
         "quickInput.foreground": p["fg"],
-        "quickInputList.focusBackground": a(p["accent"], "1f"),
+        "quickInputList.focusBackground": a(p["accent"], sel),
         "quickInputList.focusForeground": p["fg"],
         "pickerGroup.foreground": p["muted"],
         "pickerGroup.border": p["rule"],
@@ -568,8 +603,8 @@ def colors(P):
         "charts.purple": p["accent"],
 
         # debug & testing
-        "debugToolBar.background": p["chrome"],
-        "debugToolBar.border": p["rule"],
+        "debugToolBar.background": p["elevated"],
+        "debugToolBar.border": p["widgetRule"],
         "debugIcon.breakpointForeground": p["error"],
         "debugIcon.breakpointDisabledForeground": p["lineNr"],
         "testing.iconPassed": p["added"],
