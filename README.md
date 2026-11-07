@@ -17,6 +17,7 @@ shared structure so they stay consistent.
 | **Harlan Terminal (Amber)** | dark | monochrome P3 phosphor tube — amber |
 | **Harlan Terracotta Light** | light | the site's bone-paper side — plum mark, ochre-gold + olive-sage triad |
 | **Harlan Terracotta Dark** | dark | the site's desaturated-olive side, warm cream ink, terracotta mark |
+| **Harlan Porcelain** | light | white page, cool grey chrome, cobalt mark; Birta Writer's light theme, not drawn from the site |
 
 Each maps the site's **intent accents** onto code the same way: **violet**
 keywords, **fuchsia** inline code + named references (the site's `--mark` hue),
