@@ -257,8 +257,39 @@ TERRACOTTA_DARK = {
              "type": "dark", "uiTheme": "vs-dark"},
 }
 
+# Porcelain: a white page, cool grey chrome and a cobalt mark. Unlike the rest,
+# it is not drawn from the site's tokens: it began as Birta Writer's built-in
+# light theme and lives here so that every theme Birta Writer ships has one
+# source, as its README's provenance note says. Birta's copy differs only in
+# `name`. Steel takes types and literals (one family for both, as in
+# Terracotta), teal takes functions and the button's hover, green strings.
+# The ANSI slots follow those seats rather than the names: yellow is the steel
+# violet, magenta the cobalt. Birta ships it that way, so a change here is a
+# change there on its next refresh.
+PORCELAIN = {
+    "bg": "#ffffff", "chrome": "#f4f5f7", "surface": "#e6e8ec",
+    "elevated": "#fbfcfd", "widgetRule": "#dfe2e7",
+    "surfaceDeep": "#d5d8dd", "rule": "#e1e3e7", "indent": "#e9ebee",
+    "indentActive": "#d0d3d8", "lineNr": "#b6b9be", "inactiveFg": "#a5a8ad",
+    "inputBg": "#f7f8fa", "fg": "#16181b", "muted": "#6c6f74",
+    "quote": "#3a3d42", "faint": "#9da0a5", "selAlpha": "2b",
+    "accentFill": "#1368c4", "accent": "#1368c4", "accentDeep": "#1a7f8f",
+    "accentFg": "#f7f8fa", "brand": "#1368c4", "brandDeep": "#1368c4",
+    "linkActive": "#1368c4",
+    "type": "#7f45b8", "string": "#2f7d4a", "number": "#7f45b8",
+    "func": "#1a7f8f", "builtin": "#9b5fc9", "regexp": "#3f8f5a",
+    "error": "#d6284f", "errorDeep": "#a8203f", "warning": "#a16207",
+    "info": "#2f6fa8", "added": "#2f7d4a", "modified": "#9b5fc9",
+    "deleted": "#d6284f", "modSoft": "#f5c26b", "selection": "#4a8fe0",
+    "ansi": ["#16181b", "#d6284f", "#2f7d4a", "#7f45b8", "#1d4f80", "#1368c4",
+             "#2f6fa8", "#75787d", "#9da0a5", "#f94876", "#3f8f5a", "#9b5fc9",
+             "#2f6fa8", "#1a7f8f", "#5b8eeb", "#3a3d42"],
+    "meta": {"variant": "porcelain", "label": "Harlan Porcelain",
+             "type": "light", "uiTheme": "vs"},
+}
+
 PALETTES = [PAPER, SLATE, PHOSPHOR_GREEN, PHOSPHOR_AMBER,
-            TERRACOTTA_LIGHT, TERRACOTTA_DARK]
+            TERRACOTTA_LIGHT, TERRACOTTA_DARK, PORCELAIN]
 
 
 def a(hex6, alpha):

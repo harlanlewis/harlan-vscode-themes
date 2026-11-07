@@ -2,7 +2,7 @@
   "name": "harlan-vscode-themes",
   "displayName": "Harlan Themes",
   "description": "Calm, warm, monospace-minded VS Code & Cursor themes derived from harlanlewis.com — weight and space over color, one restrained palette of intent accents.",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "publisher": "harlanlewis",
   "repository": {
     "type": "git",
@@ -53,6 +53,11 @@
         "label": "Harlan Terracotta Dark",
         "uiTheme": "vs-dark",
         "path": "./themes/harlan-terracotta-dark-color-theme.json"
+      },
+      {
+        "label": "Harlan Porcelain",
+        "uiTheme": "vs",
+        "path": "./themes/harlan-porcelain-color-theme.json"
       }
     ]
   }
